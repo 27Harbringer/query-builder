@@ -1,5 +1,5 @@
-public class EqualsFilter implements Filter {
-    public String apply(String field, String operator, String value) {
-        return field + ' = \'' + value + '\'';
+public class EqualsFilter extends AbstractFilter {
+    public EqualsFilter() {
+        super('=');
     }
 }

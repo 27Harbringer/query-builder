@@ -1,5 +1,5 @@
-public class LikeFilter implements Filter {
-    public String apply(String field, String operator, String value) {
-        return field + ' LIKE \'' + value + '\'';
+public class LikeFilter extends AbstractFilter {
+    public LikeFilter() {
+        super('LIKE');
     }
 }

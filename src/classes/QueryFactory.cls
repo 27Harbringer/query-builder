@@ -1,5 +1,5 @@
 public class QueryFactory {
-    public static String createQuery(String sObjectName, List<String> fields, Map<String, String> filters, String orderByField, Boolean ascending) {
+    public static QueryWithBindings createQuery(String sObjectName, List<String> fields, Map<String, String> filters, String orderByField, Boolean ascending) {
         QueryBuilder builder = new QueryBuilder(sObjectName);
         builder.addFields(fields);
         

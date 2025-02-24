@@ -5,10 +5,13 @@ private class QueryBuilderTest {
         List<String> fields = new List<String>{'Name', 'Industry'};
         Map<String, String> filters = new Map<String, String>{'Name' => 'Acme', 'Industry' => 'Software'};
         
-        String query = QueryFactory.createQuery('Account', fields, filters, 'Name', true);
+        QueryWithBindings queryWithBindings = QueryFactory.createQuery('Account', fields, filters, 'Name', true);
+        String query = queryWithBindings.query;
         
-        String expectedQuery = 'SELECT Name, Industry FROM Account WHERE Name = \'Acme\' AND Industry = \'Software\' ORDER BY Name ASC';
+        String expectedQuery = 'SELECT Name, Industry FROM Account WHERE Name = :p0 AND Industry = :p1 ORDER BY Name ASC';
         System.assertEquals(expectedQuery, query);
+        System.assertEquals('Acme', queryWithBindings.bindVariables.get('p0'));
+        System.assertEquals('Software', queryWithBindings.bindVariables.get('p1'));
     }
     
     @isTest
@@ -19,8 +22,11 @@ private class QueryBuilderTest {
         builder.addFilter(new LikeFilter(), 'Industry', 'LIKE', 'Soft%');
         builder.addOrderBy('Name', true);
         
-        String query = builder.build();
-        String expectedQuery = 'SELECT Name FROM Account WHERE Name = \'Acme\' AND Industry LIKE \'Soft%\' ORDER BY Name ASC';
+        QueryWithBindings queryWithBindings = builder.build();
+        String query = queryWithBindings.query;
+        String expectedQuery = 'SELECT Name FROM Account WHERE Name = :p0 AND Industry LIKE :p1 ORDER BY Name ASC';
         System.assertEquals(expectedQuery, query);
+        System.assertEquals('Acme', queryWithBindings.bindVariables.get('p0'));
+        System.assertEquals('Soft%', queryWithBindings.bindVariables.get('p1'));
     }
 }
